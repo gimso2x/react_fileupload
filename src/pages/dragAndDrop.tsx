@@ -3,13 +3,13 @@ import styles from "./dragAndDrop.module.css";
 
 const DragAndDrop = () => {
   const [isDragging, setIsDragging] = useState(false);
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState<{ id: number; object: File }[]>([]);
 
   const dragRef = useRef<HTMLLabelElement | null>(null);
   const fileId = useRef(0);
   console.log(files);
   const onChangeFiles = useCallback(
-    (e) => {
+    (e: any) => {
       let selectFiles = [];
       let tempFiles: { id: number; object: File }[] = files;
 
@@ -35,7 +35,7 @@ const DragAndDrop = () => {
   );
 
   const handleFilterFile = useCallback(
-    (id) => {
+    (id: number) => {
       setFiles(files.filter((file) => file.id !== id));
     },
     [files]
