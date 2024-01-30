@@ -19,6 +19,16 @@ const DragAndDrop = () => {
         selectFiles = e.target.files;
       }
 
+      if (
+        Array.from(selectFiles).some(
+          (file: any) =>
+            !file.type.includes("image") && !file.type.includes("pdf")
+        )
+      ) {
+        alert("image나 pdf만 올릴수 있습니다");
+        return;
+      }
+
       for (const file of selectFiles) {
         tempFiles = [
           ...tempFiles,
@@ -102,6 +112,7 @@ const DragAndDrop = () => {
       <input
         type="file"
         id="fileUpload"
+        accept="image/*, .pdf"
         style={{ display: "none" }}
         multiple={true}
         onChange={onChangeFiles}
