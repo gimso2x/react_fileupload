@@ -7,7 +7,7 @@ const DragAndDrop = () => {
 
   const dragRef = useRef<HTMLLabelElement | null>(null);
   const fileId = useRef(0);
-  console.log(files);
+
   const onChangeFiles = useCallback(
     (e: any) => {
       let selectFiles = [];
@@ -19,6 +19,10 @@ const DragAndDrop = () => {
         selectFiles = e.target.files;
       }
 
+      if (Array.from(selectFiles).length > 10) {
+        alert("10개부턴 안되요");
+        return;
+      }
       if (
         Array.from(selectFiles).some(
           (file: any) =>
@@ -101,6 +105,23 @@ const DragAndDrop = () => {
     }
   }, [handleDragIn, handleDragOut, handleDragOver, handleDrop]);
 
+  const submit = async () => {
+    const formData = new FormData();
+
+    for (let i = 0; i < files.length; i++) {
+      formData.append("file", files[i].object);
+    }
+
+    await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((res) => {
+        console.log(res);
+      });
+  };
+
   useEffect(() => {
     initDragEvents();
 
@@ -142,6 +163,7 @@ const DragAndDrop = () => {
             );
           })}
       </div>
+      <button onClick={submit}>파일전송</button>
     </div>
   );
 };
